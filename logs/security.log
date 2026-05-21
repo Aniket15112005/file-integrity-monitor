@@ -1,0 +1,13 @@
+2026-05-21 15:22:33,991 - WARNING - File modified: watched-files\config.txt
+2026-05-21 15:22:42,282 - WARNING - File modified: watched-files\secret.txt
+2026-05-21 15:22:43,734 - WARNING - File modified: watched-files\secret.txt
+2026-05-21 15:23:09,642 - WARNING - New file created: watched-files\neww.txt
+2026-05-21 15:23:45,669 - WARNING - File deleted: watched-files\secret.txt
+2026-05-21 15:53:59,240 - WARNING - New file created: watched-files\test.tmp
+2026-05-21 15:54:29,002 - WARNING - File modified: watched-files\config.txt
+2026-05-21 16:10:35,026 - WARNING - [MEDIUM] File modified: watched-files\config.txt
+2026-05-21 16:10:35,055 - WARNING - [MEDIUM] File modified: watched-files\config.txt
+2026-05-21 16:11:12,679 - WARNING - [LOW] New file created: watched-files\new.txt
+2026-05-21 16:11:23,710 - WARNING - [CRITICAL] File deleted: watched-files\new.txt
+2026-05-21 16:11:33,850 - WARNING - [LOW] New file created: watched-files\ignore.tmp
+2026-05-21 16:21:31,168 - WARNING - [MEDIUM] File modified: watched-files\config.txt
