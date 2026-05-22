@@ -154,7 +154,7 @@ Possible future upgrades include:
 
 
 Email_alert feature:  add sender email_id , email_app password and receiver_mail id to implement the email alert system ( Creator Email id removed  due to security purposes.....)
-
+Enable 2 factor authentication to implement app password ( app:Mail)
 
 
 Aniket
