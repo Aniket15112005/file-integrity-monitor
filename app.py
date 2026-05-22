@@ -1,36 +1,36 @@
-import os
-
 from scanner import scan_directory
 from database import save_baseline
 from monitor import start_monitoring
+from db_logger import initialize_database
 
-WATCHED_DIR = "watched-files"
 
-IGNORE_EXTENSIONS = [
-    ".tmp",
-    ".log",
-    ".cache"
+WATCHED_DIRECTORIES = [
+    "watched-files",
+    "critical-data",
+    "configs"
 ]
 
 
-def initialize():
+def main():
+    initialize_database()
 
     print("[INFO] Creating initial baseline...")
+    
 
-    baseline = scan_directory(
-        WATCHED_DIR,
-        ignore_extensions=IGNORE_EXTENSIONS
-    )
+    combined_baseline = {}
 
-    save_baseline(baseline)
+    for directory in WATCHED_DIRECTORIES:
+
+        baseline = scan_directory(directory)
+
+        combined_baseline.update(baseline)
+
+    save_baseline(combined_baseline)
 
     print("[INFO] Baseline created successfully.")
 
+    start_monitoring(WATCHED_DIRECTORIES)
+
 
 if __name__ == "__main__":
-
-    os.makedirs("watched-files", exist_ok=True)
-
-    initialize()
-
-    start_monitoring(WATCHED_DIR)
+    main()

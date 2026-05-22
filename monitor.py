@@ -6,6 +6,8 @@ from watchdog.events import FileSystemEventHandler
 from scanner import generate_hash
 from database import load_baseline, save_baseline
 from alerts import alert
+from recovery import backup_file, recover_file
+from threat_levels import get_severity
 
 
 class FileMonitorHandler(FileSystemEventHandler):
@@ -23,6 +25,8 @@ class FileMonitorHandler(FileSystemEventHandler):
 
             file_path = event.src_path
 
+            backup_file(file_path)
+
             current_hash = generate_hash(file_path)
 
             old_hash = self.baseline.get(file_path)
@@ -31,9 +35,14 @@ class FileMonitorHandler(FileSystemEventHandler):
 
                 if current_hash != old_hash:
 
+                    severity = get_severity(
+                        "modified",
+                        file_path
+                    )
+
                     alert(
                         f"File modified: {file_path}",
-                        "MEDIUM"
+                        severity
                     )
 
                     self.baseline[file_path] = current_hash
@@ -59,9 +68,14 @@ class FileMonitorHandler(FileSystemEventHandler):
 
             save_baseline(self.baseline)
 
+            severity = get_severity(
+                "created",
+                file_path
+            )
+
             alert(
                 f"New file created: {file_path}",
-                "LOW"
+                severity
             )
 
         except Exception as e:
@@ -83,31 +97,40 @@ class FileMonitorHandler(FileSystemEventHandler):
 
                 save_baseline(self.baseline)
 
+            severity = get_severity(
+                "deleted",
+                file_path
+            )
+
             alert(
                 f"File deleted: {file_path}",
-                "CRITICAL"
+                severity
             )
+
+            recover_file(file_path)
 
         except Exception as e:
 
             print(f"[ERROR] {e}")
 
 
-def start_monitoring(path):
+def start_monitoring(paths):
 
     event_handler = FileMonitorHandler()
 
     observer = Observer()
 
-    observer.schedule(
-        event_handler,
-        path,
-        recursive=True
-    )
+    for path in paths:
+
+        observer.schedule(
+            event_handler,
+            path,
+            recursive=True
+        )
+
+        print(f"[INFO] Monitoring started on: {path}")
 
     observer.start()
-
-    print(f"[INFO] Monitoring started on: {path}")
 
     try:
 
