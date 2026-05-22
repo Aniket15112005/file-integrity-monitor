@@ -3,10 +3,23 @@ import time
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
-from scanner import generate_hash
-from database import load_baseline, save_baseline
+from scanner import (
+    generate_hash,
+    should_ignore
+)
+
+from database import (
+    load_baseline,
+    save_baseline
+)
+
 from alerts import alert
-from recovery import backup_file, recover_file
+
+from recovery import (
+    backup_file,
+    recover_file
+)
+
 from threat_levels import get_severity
 
 
@@ -24,6 +37,9 @@ class FileMonitorHandler(FileSystemEventHandler):
                 return
 
             file_path = event.src_path
+
+            if should_ignore(file_path):
+                return
 
             backup_file(file_path)
 
@@ -62,6 +78,9 @@ class FileMonitorHandler(FileSystemEventHandler):
 
             file_path = event.src_path
 
+            if should_ignore(file_path):
+                return
+
             current_hash = generate_hash(file_path)
 
             self.baseline[file_path] = current_hash
@@ -90,6 +109,9 @@ class FileMonitorHandler(FileSystemEventHandler):
                 return
 
             file_path = event.src_path
+
+            if should_ignore(file_path):
+                return
 
             if file_path in self.baseline:
 
@@ -135,6 +157,7 @@ def start_monitoring(paths):
     try:
 
         while True:
+
             time.sleep(1)
 
     except KeyboardInterrupt:
