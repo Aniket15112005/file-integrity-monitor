@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>FIM Dashboard</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>File Integrity Monitoring Dashboard</h1>
+
+        <div class="stats">
+
+            <div class="card">
+                <h2>Total Alerts</h2>
+                <p>{{ total_alerts }}</p>
+            </div>
+
+            <div class="card critical">
+                <h2>Critical Alerts</h2>
+                <p>{{ critical_count }}</p>
+            </div>
+
+            <div class="card high">
+                <h2>High Alerts</h2>
+                <p>{{ high_count }}</p>
+            </div>
+
+        </div>
+
+        <h2>Recent Security Events</h2>
+
+        <table>
+
+            <tr>
+                <th>Timestamp</th>
+                <th>Severity</th>
+                <th>Message</th>
+            </tr>
+
+            {% for log in logs %}
+
+            <tr>
+                <td>{{ log[0] }}</td>
+                <td>{{ log[1] }}</td>
+                <td>{{ log[2] }}</td>
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+    </div>
+
+</body>
+
+</html>
