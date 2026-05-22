@@ -4,7 +4,7 @@ from email.mime.multipart import MIMEMultipart
 
 
 EMAIL_ADDRESS = "Your Mail address"
-EMAIL_PASSWORD = "Your Email Password"
+EMAIL_PASSWORD = "Your Google app password"
 
 TO_EMAIL = "RECIPIENT_EMAIL_ADDRESS"
 
