@@ -3,10 +3,10 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 
-EMAIL_ADDRESS = "24bcya29@kristujayanti.com"
-EMAIL_PASSWORD = "hxwq fdrx ekod xkmj"
+EMAIL_ADDRESS = "Your Mail address"
+EMAIL_PASSWORD = "Your Email Password"
 
-TO_EMAIL = "24bcya29@kristujayanti.com"
+TO_EMAIL = "RECIPIENT_EMAIL_ADDRESS"
 
 
 def send_email_alert(message, severity):
