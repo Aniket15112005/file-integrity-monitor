@@ -2,6 +2,15 @@ File Integrity Monitoring System (FIM)
 
 A real-time cybersecurity monitoring system built using Python that detects unauthorized file changes, generates alerts, logs security events, and automatically recovers deleted files.
 
+IMPORTANT:::: CREATE A VIRTUAL ENVIRONMENT BEFORE EXECUTING - (OR INSTALL GLOBALLY TO RUN WITHOUT VIRTUAL ENVIRONMENT)
+Steps  to create virtual environment:
+1.   python -m venv venv      (create the env)
+2.   venv\Scripts\activate    (activate it)
+3.   pip install -r requirements.txt  (install all dependencies)
+4.   python app.py
+     python dashboard.py    (Run project)
+         ...for dashboartd(keep the python app.py command running , open a new terminal run the command python dashboard.py and open the http live server)
+
 
 Features
 
@@ -80,6 +89,7 @@ pip install -r requirements.txt
 
 bash
 python app.py
+python dashboard.py  (open the http to view the dashboard)
 
 
 ## How the System Works
@@ -141,6 +151,9 @@ Possible future upgrades include:
 - Cloud log storage
 - User authentication
 - Advanced malware detection
+
+
+Email_alert feature:  add sender email_id , email_app password and receiver_mail id to implement the email alert system ( Creator Email id removed  due to security purposes.....)
 
 
 

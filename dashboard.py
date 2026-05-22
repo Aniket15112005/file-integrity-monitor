@@ -1,61 +1,64 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify
 import sqlite3
 
 app = Flask(__name__)
 
-
 DATABASE = "database.db"
+
 
 
 def get_logs():
 
-    connection = sqlite3.connect(DATABASE)
-
-    cursor = connection.cursor()
+    conn = sqlite3.connect(DATABASE)
+    cursor = conn.cursor()
 
     cursor.execute("""
         SELECT timestamp, severity, message
         FROM security_logs
         ORDER BY id DESC
-        LIMIT 20
+        LIMIT 30
     """)
 
-    logs = cursor.fetchall()
+    rows = cursor.fetchall()
+    conn.close()
 
-    connection.close()
+    return rows
 
-    return logs
 
 
 @app.route("/")
-def dashboard():
+def index():
 
     logs = get_logs()
 
-    total_alerts = len(logs)
+    # STATS CALCULATION
+    stats = {
+        "total": len(logs),
+        "critical": sum(1 for r in logs if r[1] == "CRITICAL"),
+        "high": sum(1 for r in logs if r[1] == "HIGH"),
+        "medium": sum(1 for r in logs if r[1] == "MEDIUM"),
+        "low": sum(1 for r in logs if r[1] == "LOW"),
+    }
 
-    critical_count = sum(
-        1 for log in logs
-        if log[1] == "CRITICAL"
-    )
+    return render_template("dashboard.html", stats=stats)
 
-    high_count = sum(
-        1 for log in logs
-        if log[1] == "HIGH"
-    )
 
-    return render_template(
-        "dashboard.html",
-        logs=logs,
-        total_alerts=total_alerts,
-        critical_count=critical_count,
-        high_count=high_count
-    )
+
+@app.route("/api/logs")
+def api_logs():
+
+    logs = get_logs()
+
+    return jsonify([
+        {
+            "time": r[0],
+            "severity": r[1],
+            "message": r[2]
+        }
+        for r in logs
+    ])
+
 
 
 if __name__ == "__main__":
-
-    app.run(
-        debug=True,
-        port=5000
-    )
+    app.run(debug=True, port=5000)
